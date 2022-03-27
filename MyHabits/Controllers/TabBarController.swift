@@ -13,13 +13,14 @@ class TabBarController: UITabBarController {
         super.viewDidLoad()
         let habitsVC = HabitsViewController()
         let infoVC = InfoViewController()
-        let navigationVC = UINavigationController(rootViewController: habitsVC)
-       
-        habitsVC.tabBarItem = UITabBarItem(title: "habitsVC", image: UIImage(systemName: "house.circle"), tag: 0)
+        let navigationHabitsVC = UINavigationController(rootViewController: habitsVC)
+        navigationHabitsVC.navigationBar.prefersLargeTitles = true
+        habitsVC.tabBarItem = UITabBarItem(title: "Привычки", image: UIImage(named: "TabBarIcon"), tag: 0)
+        let navigationInfoVC = UINavigationController(rootViewController: infoVC)
+        infoVC.tabBarItem = UITabBarItem(title: "Информация", image: UIImage(systemName: "info.circle.fill"), tag: 1)
         
-        infoVC.tabBarItem = UITabBarItem(title: "infoVC", image: UIImage(systemName: "info.circle"), tag: 1)
-        
-        self.viewControllers = [navigationVC,infoVC]
+        self.viewControllers = [navigationHabitsVC,navigationInfoVC]
+        self.selectedViewController = navigationInfoVC
     }
 
 
