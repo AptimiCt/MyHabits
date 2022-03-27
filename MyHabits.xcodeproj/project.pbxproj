@@ -15,6 +15,7 @@
 		BB6D828D27EDD038003AA338 /* HabitsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6D828C27EDD037003AA338 /* HabitsStore.swift */; };
 		BB6D829727EE70E1003AA338 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6D829627EE70E1003AA338 /* InfoViewController.swift */; };
 		BB6D829927EE79E1003AA338 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6D829827EE79E1003AA338 /* TabBarController.swift */; };
+		BB6D829F27EF1E7E003AA338 /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6D829E27EF1E7E003AA338 /* UIView+Ext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		BB6D828C27EDD037003AA338 /* HabitsStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HabitsStore.swift; sourceTree = "<group>"; };
 		BB6D829627EE70E1003AA338 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		BB6D829827EE79E1003AA338 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		BB6D829E27EF1E7E003AA338 /* UIView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,8 @@
 		BB6D827327EDCAD9003AA338 /* MyHabits */ = {
 			isa = PBXGroup;
 			children = (
+				BB6D829D27EF1E4B003AA338 /* Extension */,
+				BB6D829A27EF1DE5003AA338 /* Utils */,
 				BB6D828927EDCE44003AA338 /* Delegate */,
 				BB6D828827EDCE20003AA338 /* Storage */,
 				BB6D829527EE7053003AA338 /* Controllers */,
@@ -95,6 +99,21 @@
 				BB6D829827EE79E1003AA338 /* TabBarController.swift */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		BB6D829A27EF1DE5003AA338 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		BB6D829D27EF1E4B003AA338 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				BB6D829E27EF1E7E003AA338 /* UIView+Ext.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -171,6 +190,7 @@
 				BB6D827927EDCAD9003AA338 /* HabitsViewController.swift in Sources */,
 				BB6D827527EDCAD9003AA338 /* AppDelegate.swift in Sources */,
 				BB6D829927EE79E1003AA338 /* TabBarController.swift in Sources */,
+				BB6D829F27EF1E7E003AA338 /* UIView+Ext.swift in Sources */,
 				BB6D827727EDCAD9003AA338 /* SceneDelegate.swift in Sources */,
 				BB6D829727EE70E1003AA338 /* InfoViewController.swift in Sources */,
 			);
