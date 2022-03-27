@@ -26,7 +26,6 @@ class InfoViewController: UIViewController {
     private lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
         titleLabel.toAutoLayout()
-        titleLabel.font = .init(name: "SF Pro Display", size: 20)
         titleLabel.font = .preferredFont(forTextStyle: .title3)
         titleLabel.font = .systemFont(ofSize: 20, weight: .semibold)
         return titleLabel
@@ -75,12 +74,7 @@ class InfoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(titleLabel.font.fontDescriptor)
-        print(titleLabel.font.familyName)
-        print(footNoteLabel.font.fontName)
-        print(footNoteLabel.font.familyName)
-        
-        
+
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.toAutoLayout()
