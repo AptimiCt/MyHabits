@@ -85,9 +85,8 @@ class HabitViewController: UIViewController {
     init(_ actionType: ActionType) {
         self.actionType = actionType
         super.init(nibName: nil, bundle: nil)
-                view.backgroundColor = .white
+        view.backgroundColor = .white
         colorPickerView.layer.cornerRadius = 15
-        self.title = "Создать"
     }
     
     required init?(coder: NSCoder) {
@@ -97,15 +96,7 @@ class HabitViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        let leftButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
-        let rightButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(save))
-        self.title = "Создать"
-        self.navigationController?.navigationItem.leftBarButtonItem = leftButtonItem
-        //self.navigationController?.navigationItem.title = "leftButtonItem"
-        self.navigationController?.navigationItem.rightBarButtonItem = rightButtonItem
-
-        
+        configureNavigationBar(for: actionType)
         
         setTextLabels()
         colorPickerView.addTarget(self, action: #selector(openColorPicker), for: .touchUpInside)
@@ -113,29 +104,27 @@ class HabitViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         
-        contentView.addSubviews(titleLabel, titleTextField, colorLabel, colorPickerView, timeLabel, timePickerLabel, timePicker)
+        contentView.addSubviews(titleLabel, titleTextField, colorLabel, colorPickerView,
+                                timeLabel, timePickerLabel, timePicker)
         addSubviewsWith(actionType)
         scrollView.pin(to: view)
         configureConstraints()
         configureConstraints(actionType)
     }
-    @objc private func cancel() {
-        dismiss(animated: true)
-    }
-    
-    @objc private func save() {
-        print("save")
-    }
-    private func setTitle(for param: ActionType){
-        title = param == .create ? "Создать" : "Редактировать"
-    }
+ 
     private func setTextLabels(){
         titleLabel.text = "НАЗВАНИЕ"
         colorLabel.text = "ЦВЕТ"
         timeLabel.text = "ВРЕМЯ"
         timePickerLabel.text = "Каждый день в 11:00 PM"
     }
-    
+    fileprivate func configureNavigationBar(for actionType: ActionType) {
+        let leftButtonItem = UIBarButtonItem(title: "Отменить", style: .plain, target: self, action: #selector(cancel))
+        let rightButtonItem = UIBarButtonItem(title: "Сохранить", style: .done, target: self, action: #selector(save))
+        self.navigationItem.title = actionType == .create ? "Создать" : "Редактировать"
+        self.navigationItem.leftBarButtonItem = leftButtonItem
+        self.navigationItem.rightBarButtonItem = rightButtonItem
+    }
     private func configureConstraints(){
         [
             contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
@@ -192,8 +181,8 @@ class HabitViewController: UIViewController {
             ].forEach { $0.isActive = true }
         }
     }
-    private func addSubviewsWith(_ param: ActionType){
-        if param != .create{
+    private func addSubviewsWith(_ actionType: ActionType){
+        if actionType != .create{
             contentView.addSubview(deleteButton)
             deleteButton.addTarget(self, action: #selector(deleteHabit), for: .touchUpInside)
         }
@@ -205,5 +194,12 @@ class HabitViewController: UIViewController {
     
     @objc private func deleteHabit(){
         print(#function)
+    }
+    @objc private func cancel() {
+        dismiss(animated: true)
+    }
+    
+    @objc private func save() {
+        print("save")
     }
 }

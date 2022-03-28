@@ -26,8 +26,9 @@ class HabitsViewController: UIViewController {
     
     @objc private func addButton(){
         let habitViewController = HabitViewController(.edit)
-        habitViewController.modalPresentationStyle = .fullScreen
-        present(habitViewController, animated: true)
+        let navigationHabitViewController = UINavigationController(rootViewController: habitViewController)
+        navigationHabitViewController.modalPresentationStyle = .fullScreen
+        present(navigationHabitViewController, animated: true)
     }
 }
 
