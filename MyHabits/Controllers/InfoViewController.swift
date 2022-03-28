@@ -11,13 +11,13 @@ class InfoViewController: UIViewController {
     
     private let contentView = UIView()
     
-    private lazy var textView: UILabel = {
-        let textView = UILabel()
-        textView.toAutoLayout()
-        textView.numberOfLines = 0
-        textView.font = .preferredFont(forTextStyle: .body)
-        textView.font = .systemFont(ofSize: 17, weight: .regular)
-        return textView
+    private lazy var textLabel: UILabel = {
+        let textLabel = UILabel()
+        textLabel.toAutoLayout()
+        textLabel.numberOfLines = 0
+        textLabel.font = .preferredFont(forTextStyle: .body)
+        textLabel.font = .systemFont(ofSize: 17, weight: .regular)
+        return textLabel
     }()
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -35,17 +35,34 @@ class InfoViewController: UIViewController {
         footNoteLabel.toAutoLayout()
         footNoteLabel.font = .preferredFont(forTextStyle: .body)
         footNoteLabel.font = .systemFont(ofSize: 17, weight: .regular)
-        
-        
         return footNoteLabel
     }()
     
     init(){
         super.init(nibName: nil, bundle: nil)
         self.title = "Информация"
+        setTextlabel()
+        view.backgroundColor = .white
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        contentView.toAutoLayout()
+        contentView.addSubviews(titleLabel, footNoteLabel, textLabel)
+        scrollView.pin(to: view)
+        configureConstraints()
+    }
+    
+    fileprivate func setTextlabel() {
         titleLabel.text = "Привычка за 21 день"
-        
-        textView.text =
+        textLabel.text =
         """
         Прохождение этапов, за которые за 21 день вырабатывается привычка, подчиняется следующему алгоритму:
         
@@ -63,24 +80,7 @@ class InfoViewController: UIViewController {
         
         6. На 90-й день соблюдения техники все лишнее из «прошлой жизни» перестает напоминать о себе, и человек, оглянувшись назад, осознает себя полностью обновившимся.
         """
-        
         footNoteLabel.text = "Источник: psychbook.ru"
-        view.backgroundColor = .white
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        view.addSubview(scrollView)
-        scrollView.addSubview(contentView)
-        contentView.toAutoLayout()
-        contentView.addSubviews(titleLabel, footNoteLabel, textView)
-        scrollView.pin(to: view)
-        configureConstraints()
     }
     
     private func configureConstraints(){
@@ -93,12 +93,12 @@ class InfoViewController: UIViewController {
             
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             titleLabel.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 22),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -141),
-            titleLabel.bottomAnchor.constraint(equalTo: textView.topAnchor, constant: -16),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            titleLabel.bottomAnchor.constraint(equalTo: textLabel.topAnchor, constant: -16),
             
-            textView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            textView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            textView.bottomAnchor.constraint(equalTo: footNoteLabel.topAnchor, constant: -16),
+            textLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            textLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            textLabel.bottomAnchor.constraint(equalTo: footNoteLabel.topAnchor, constant: -16),
             
             footNoteLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             footNoteLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
