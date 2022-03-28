@@ -9,6 +9,7 @@ import UIKit
 
 class HabitViewController: UIViewController {
     
+    //MARK: - var
     private var actionType: ActionType
     
     private lazy var contentView: UIView = {
@@ -81,7 +82,8 @@ class HabitViewController: UIViewController {
         deleteButton.setTitleColor(UIColor(red: 0.5, green: 0, blue: 0, alpha: 1), for: .highlighted)
         return deleteButton
     }()
-
+    
+    //MARK: - init
     init(_ actionType: ActionType) {
         self.actionType = actionType
         super.init(nibName: nil, bundle: nil)
@@ -93,6 +95,7 @@ class HabitViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - override func
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -111,14 +114,15 @@ class HabitViewController: UIViewController {
         configureConstraints()
         configureConstraints(actionType)
     }
- 
+    
+    //MARK: - func
     private func setTextLabels(){
         titleLabel.text = "НАЗВАНИЕ"
         colorLabel.text = "ЦВЕТ"
         timeLabel.text = "ВРЕМЯ"
         timePickerLabel.text = "Каждый день в 11:00 PM"
     }
-    fileprivate func configureNavigationBar(for actionType: ActionType) {
+    private func configureNavigationBar(for actionType: ActionType) {
         let leftButtonItem = UIBarButtonItem(title: "Отменить", style: .plain, target: self, action: #selector(cancel))
         let rightButtonItem = UIBarButtonItem(title: "Сохранить", style: .done, target: self, action: #selector(save))
         self.navigationItem.title = actionType == .create ? "Создать" : "Редактировать"
@@ -188,8 +192,13 @@ class HabitViewController: UIViewController {
         }
     }
     
+    //MARK: - @objc func
     @objc private func openColorPicker(){
-        print(#function)
+        let colorPicker =  UIColorPickerViewController()
+        colorPicker.delegate = self
+        colorPicker.selectedColor = colorPickerView.backgroundColor ?? .orange
+        colorPicker.title = "Выбор цвета"
+        present(colorPicker, animated: true)
     }
     
     @objc private func deleteHabit(){
@@ -201,5 +210,12 @@ class HabitViewController: UIViewController {
     
     @objc private func save() {
         print("save")
+    }
+}
+
+//MARK: - extension
+extension HabitViewController:  UIColorPickerViewControllerDelegate {
+    func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController){
+        colorPickerView.backgroundColor = viewController.selectedColor
     }
 }

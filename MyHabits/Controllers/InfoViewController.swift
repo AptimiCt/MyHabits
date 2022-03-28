@@ -9,6 +9,7 @@ import UIKit
 
 class InfoViewController: UIViewController {
     
+    //MARK: - var
     private let contentView = UIView()
     
     private lazy var textLabel: UILabel = {
@@ -38,10 +39,11 @@ class InfoViewController: UIViewController {
         return footNoteLabel
     }()
     
+    //MARK: - init
     init(){
         super.init(nibName: nil, bundle: nil)
         self.title = "Информация"
-        setTextlabel()
+        setTextLabel()
         view.backgroundColor = .white
     }
     
@@ -49,6 +51,7 @@ class InfoViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - override func
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -60,7 +63,8 @@ class InfoViewController: UIViewController {
         configureConstraints()
     }
     
-    fileprivate func setTextlabel() {
+    //MARK: - func
+    private func setTextLabel() {
         titleLabel.text = "Привычка за 21 день"
         textLabel.text =
         """
@@ -82,7 +86,6 @@ class InfoViewController: UIViewController {
         """
         footNoteLabel.text = "Источник: psychbook.ru"
     }
-    
     private func configureConstraints(){
         [
             contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),

@@ -9,6 +9,7 @@ import UIKit
 
 class HabitsViewController: UIViewController {
     
+    //MARK: - init
     init(){
         super.init(nibName: nil, bundle: nil)
         view.backgroundColor = .white
@@ -16,16 +17,18 @@ class HabitsViewController: UIViewController {
         self.title = "Сегодня"
         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButton)), animated: true)
     }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    //MARK: - override func
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
+    //MARK: - @objc func
     @objc private func addButton(){
-        let habitViewController = HabitViewController(.edit)
+        let habitViewController = HabitViewController(.create)
         let navigationHabitViewController = UINavigationController(rootViewController: habitViewController)
         navigationHabitViewController.modalPresentationStyle = .fullScreen
         present(navigationHabitViewController, animated: true)
