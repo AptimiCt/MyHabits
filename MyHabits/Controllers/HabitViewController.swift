@@ -111,22 +111,25 @@ class HabitViewController: UIViewController {
         
         setTextLabels()
         addTargets()
+        
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         
         contentView.addSubviews(titleLabel, titleTextField, colorLabel, colorPickerView,
                                 timeLabel, timePickerLabel, timePicker)
         addSubviewsWith(actionType)
+        
         scrollView.pin(to: view)
         configureConstraints()
         configureConstraints(actionType)
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         notificationCenter.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        
         notificationCenter.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardDidHideNotification, object: nil)
     }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         notificationCenter.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -141,6 +144,7 @@ class HabitViewController: UIViewController {
         let time = timePicker.date
         timePickerLabel.text = "Каждый день в \(dateFormatter.string(from: time))"
     }
+    
     private func addTargets() {
         colorPickerView.addTarget(self, action: #selector(openColorPicker), for: .touchUpInside)
         timePicker.addTarget(self, action: #selector(changeTimeOnPicker), for: .valueChanged)
@@ -153,6 +157,7 @@ class HabitViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = leftButtonItem
         self.navigationItem.rightBarButtonItem = rightButtonItem
     }
+    
     private func configureConstraints(){
         [
             contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
@@ -194,6 +199,7 @@ class HabitViewController: UIViewController {
             timePicker.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
         ].forEach { $0.isActive = true }
     }
+    
     private func configureConstraints(_ actionType: ActionType){
         if actionType == .create {
             [
@@ -209,6 +215,7 @@ class HabitViewController: UIViewController {
             ].forEach { $0.isActive = true }
         }
     }
+    
     private func addSubviewsWith(_ actionType: ActionType){
         if actionType != .create{
             contentView.addSubview(deleteButton)
@@ -224,19 +231,29 @@ class HabitViewController: UIViewController {
         colorPicker.title = "Выбор цвета"
         present(colorPicker, animated: true)
     }
+    
     @objc private func changeTimeOnPicker(){
         let time = timePicker.date
         timePickerLabel.text = "Каждый день в \(dateFormatter.string(from: time))"
     }
+    
     @objc private func deleteHabit(){
         print(#function)
     }
+    
     @objc private func cancel() {
         dismiss(animated: true)
     }
     
     @objc private func save() {
-        print("save")
+        guard let text = titleTextField.text else { return }
+        guard let color = colorPickerView.backgroundColor else { return }
+        let newHabit = Habit(name: text,
+                             date: timePicker.date,
+                             color: color)
+        let store = HabitsStore.shared
+        store.habits.append(newHabit)
+        dismiss(animated: true)
     }
 }
 
@@ -255,6 +272,7 @@ extension HabitViewController {
             scrollView.verticalScrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
         }
     }
+    
     @objc private func keyboardWillHide(notification: NSNotification){
         scrollView.contentInset.bottom = .zero
         scrollView.verticalScrollIndicatorInsets = .zero
