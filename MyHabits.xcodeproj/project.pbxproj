@@ -18,6 +18,7 @@
 		BB6D829F27EF1E7E003AA338 /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6D829E27EF1E7E003AA338 /* UIView+Ext.swift */; };
 		BBBFE0AB27F009EF004D0763 /* HabitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBFE0AA27F009EF004D0763 /* HabitViewController.swift */; };
 		BBBFE0AD27F0C11A004D0763 /* ActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBFE0AC27F0C11A004D0763 /* ActionType.swift */; };
+		BBE50A2B27F3C7870017952D /* HabitCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE50A2A27F3C7870017952D /* HabitCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		BB6D829E27EF1E7E003AA338 /* UIView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
 		BBBFE0AA27F009EF004D0763 /* HabitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitViewController.swift; sourceTree = "<group>"; };
 		BBBFE0AC27F0C11A004D0763 /* ActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionType.swift; sourceTree = "<group>"; };
+		BBE50A2A27F3C7870017952D /* HabitCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 		BB6D827327EDCAD9003AA338 /* MyHabits */ = {
 			isa = PBXGroup;
 			children = (
+				BBE50A2927F3C7560017952D /* View */,
 				BB6D829D27EF1E4B003AA338 /* Extension */,
 				BB6D829A27EF1DE5003AA338 /* Utils */,
 				BB6D828927EDCE44003AA338 /* Delegate */,
@@ -120,6 +123,14 @@
 				BB6D829E27EF1E7E003AA338 /* UIView+Ext.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		BBE50A2927F3C7560017952D /* View */ = {
+			isa = PBXGroup;
+			children = (
+				BBE50A2A27F3C7870017952D /* HabitCollectionViewCell.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -200,6 +211,7 @@
 				BB6D829F27EF1E7E003AA338 /* UIView+Ext.swift in Sources */,
 				BB6D827727EDCAD9003AA338 /* SceneDelegate.swift in Sources */,
 				BBBFE0AD27F0C11A004D0763 /* ActionType.swift in Sources */,
+				BBE50A2B27F3C7870017952D /* HabitCollectionViewCell.swift in Sources */,
 				BB6D829727EE70E1003AA338 /* InfoViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
