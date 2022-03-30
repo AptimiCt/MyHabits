@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HabitCollectionViewCell: UICollectionViewCell {
+final class HabitCollectionViewCell: UICollectionViewCell {
     
     private let habitNameLabel: UILabel = {
         let habitNameLabel = UILabel()
@@ -79,6 +79,7 @@ class HabitCollectionViewCell: UICollectionViewCell {
             checkBoxView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -26)
         ].forEach { $0.isActive = true }
     }
+    
     //MARK: - func
     func configure(with habit: Habit) {
         let habitColor = habit.color

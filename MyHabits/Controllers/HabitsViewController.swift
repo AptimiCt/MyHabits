@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HabitsViewController: UIViewController {
+final class HabitsViewController: UIViewController {
     
     //MARK: - var
     let store = HabitsStore.shared
@@ -19,6 +19,7 @@ class HabitsViewController: UIViewController {
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(HabitCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: HabitCollectionViewCell.self))
+        collectionView.register(ProgressCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: ProgressCollectionViewCell.self))
         collectionView.backgroundColor = UIColor(named: "LightGrayColor")
         collectionView.contentInset = UIEdgeInsets(top: 22, left: 16, bottom: 0, right: 16)
         return collectionView
@@ -38,6 +39,7 @@ class HabitsViewController: UIViewController {
     //MARK: - override func
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.addSubview(UIView())
         collectionView.delegate = self
         collectionView.dataSource = self
         view.addSubview(collectionView)
@@ -55,7 +57,12 @@ class HabitsViewController: UIViewController {
 //MARK: - extension
 extension HabitsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width - 32, height: 130)
+    
+        if indexPath.item == 0 {
+            return CGSize(width: UIScreen.main.bounds.width - 32, height: 60)
+        } else {
+            return CGSize(width: UIScreen.main.bounds.width - 32, height: 130)
+        }
     }
 }
 
@@ -65,9 +72,15 @@ extension HabitsViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: HabitCollectionViewCell.self), for: indexPath) as! HabitCollectionViewCell
-        cell.configure(with: store.habits[indexPath.item])
-        return cell
+        if indexPath.item == 0 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ProgressCollectionViewCell.self), for: indexPath) as! ProgressCollectionViewCell
+            cell.configure(with: store)
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: HabitCollectionViewCell.self), for: indexPath) as! HabitCollectionViewCell
+            cell.configure(with: store.habits[indexPath.item])
+            return cell
+        }
     }
 }
 
