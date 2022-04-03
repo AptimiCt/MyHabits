@@ -35,7 +35,7 @@ final class HabitsViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+   
     //MARK: - override func
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,31 +54,40 @@ final class HabitsViewController: UIViewController {
         present(navigationHabitViewController, animated: true)
     }
 }
-//MARK: - extension
+//MARK: - extension UICollectionViewDelegateFlowLayout
 extension HabitsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    
-        if indexPath.item == 0 {
+        
+        if indexPath.section == 0 {
             return CGSize(width: UIScreen.main.bounds.width - 32, height: 60)
         } else {
             return CGSize(width: UIScreen.main.bounds.width - 32, height: 130)
         }
     }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        UIEdgeInsets(top: 0, left: 0, bottom: 18, right: 0)
+    }
+    
 }
-
+//MARK: - extension UICollectionViewDataSource
 extension HabitsViewController: UICollectionViewDataSource {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        2
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        store.habits.count
+         section == 0 ?  1 : store.habits.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.item == 0 {
+        if indexPath.section == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ProgressCollectionViewCell.self), for: indexPath) as! ProgressCollectionViewCell
             cell.configure(with: store)
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: HabitCollectionViewCell.self), for: indexPath) as! HabitCollectionViewCell
-            cell.configure(with: store.habits[indexPath.item])
+            cell.habit = store.habits[indexPath.item]
             return cell
         }
     }

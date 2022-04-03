@@ -9,6 +9,29 @@ import UIKit
 
 final class HabitCollectionViewCell: UICollectionViewCell {
     
+    var habit: Habit? {
+        didSet{
+            guard let habit = habit else { return }
+            let habitColor = habit.color
+            habitNameLabel.text = habit.name
+            habitNameLabel.textColor = habitColor
+
+            timeHabitLabel.text = habit.dateString
+            countLabel.text = "Счетчик: " + String(habit.trackDates.count)
+
+            checkBoxButton.layer.borderColor = habitColor.cgColor
+            if habit.trackDates.count > 0 {
+                checkBoxButton.backgroundColor = habitColor
+                checkBoxButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
+                checkBoxButton.tintColor = .white
+            }
+        }
+    }
+    
+//    var indexPath: IndexPath?
+    
+//    weak var delegate: HabitCollectionViewCellDelegate?
+    
     private let habitNameLabel: UILabel = {
         let habitNameLabel = UILabel()
         habitNameLabel.toAutoLayout()
@@ -33,29 +56,32 @@ final class HabitCollectionViewCell: UICollectionViewCell {
         countLabel.textColor = .systemGray
         return countLabel
     }()
-    private let checkBoxView: UIButton = {
-        let checkBoxView = UIButton()
-        checkBoxView.toAutoLayout()
-        checkBoxView.layer.cornerRadius = 19
-        checkBoxView.layer.borderWidth = 2
-        checkBoxView.backgroundColor = .white
-        return checkBoxView
+    let checkBoxButton: UIButton = {
+        let checkBoxButton = UIButton()
+        checkBoxButton.toAutoLayout()
+        checkBoxButton.layer.cornerRadius = 19
+        checkBoxButton.layer.borderWidth = 2
+        checkBoxButton.backgroundColor = .white
+        
+        return checkBoxButton
     }()
+    
     //MARK: - init
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .white
         self.layer.cornerRadius = 8
         setup()
+        checkBoxButton.addTarget(self, action: #selector(checkBoxTaped), for: .touchUpInside)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     //MARK: - private func
     private func setup(){
-        contentView.addSubviews(habitNameLabel, timeHabitLabel, countLabel, checkBoxView)
+        contentView.addSubviews(habitNameLabel, timeHabitLabel, countLabel, checkBoxButton)
         configureConstraints()
     }
     private func configureConstraints(){
@@ -73,27 +99,23 @@ final class HabitCollectionViewCell: UICollectionViewCell {
             countLabel.trailingAnchor.constraint(equalTo: habitNameLabel.trailingAnchor),
             countLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
             
-            checkBoxView.heightAnchor.constraint(equalToConstant: 38),
-            checkBoxView.widthAnchor.constraint(equalTo: checkBoxView.heightAnchor),
-            checkBoxView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            checkBoxView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -26)
+            checkBoxButton.heightAnchor.constraint(equalToConstant: 38),
+            checkBoxButton.widthAnchor.constraint(equalTo: checkBoxButton.heightAnchor),
+            checkBoxButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            checkBoxButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -26)
         ].forEach { $0.isActive = true }
     }
     
-    //MARK: - func
-    func configure(with habit: Habit) {
-        let habitColor = habit.color
-        habitNameLabel.text = habit.name
-        habitNameLabel.textColor = habitColor
-        
-        timeHabitLabel.text = habit.dateString
-        countLabel.text = "Счетчик: " + String(habit.trackDates.count)
-        
-        checkBoxView.layer.borderColor = habitColor.cgColor
-        if habit.trackDates.count > 0 {
-            checkBoxView.backgroundColor = habitColor
-            checkBoxView.setImage(UIImage(systemName: "checkmark"), for: .normal)
-            checkBoxView.tintColor = .white
+    //MARK: - @objc func
+    @objc func checkBoxTaped(){
+        guard let habit = habit else { return }
+        let store = HabitsStore.shared
+        if  !habit.isAlreadyTakenToday {
+            store.track(habit)
+            checkBoxButton.backgroundColor = habit.color
+            checkBoxButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
+            checkBoxButton.tintColor = .white
+            countLabel.text = "Счетчик: " + String(habit.trackDates.count)
         }
     }
 }
