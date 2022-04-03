@@ -17,8 +17,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SplashIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Hxf-bn-Jzu">
-                                <rect key="frame" x="136.66666666666666" y="363.66666666666669" width="117" height="117"/>
+                                <rect key="frame" x="135" y="362" width="120" height="120"/>
                                 <constraints>
+                                    <constraint firstAttribute="height" constant="120" id="0lD-pq-73n"/>
                                     <constraint firstAttribute="width" secondItem="Hxf-bn-Jzu" secondAttribute="height" multiplier="1:1" id="EqC-KS-5Tv"/>
                                 </constraints>
                             </imageView>
@@ -41,7 +42,6 @@
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Jfe-dz-9ZS" secondAttribute="bottom" constant="76" id="CEk-bQ-ic2"/>
                             <constraint firstItem="Hxf-bn-Jzu" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="ExY-0B-alN"/>
-                            <constraint firstItem="Hxf-bn-Jzu" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width" multiplier="0.3" id="GKy-PB-Z6P"/>
                             <constraint firstItem="Jfe-dz-9ZS" firstAttribute="leading" relation="lessThanOrEqual" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="144" id="M9b-8g-50M"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="Jfe-dz-9ZS" secondAttribute="trailing" constant="144" id="PEd-sW-r3O"/>
                             <constraint firstItem="Hxf-bn-Jzu" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="R2N-wq-MYO"/>

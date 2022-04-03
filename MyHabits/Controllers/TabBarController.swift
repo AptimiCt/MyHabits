@@ -20,8 +20,6 @@ class TabBarController: UITabBarController {
         infoVC.tabBarItem = UITabBarItem(title: "Информация", image: UIImage(systemName: "info.circle.fill"), tag: 1)
         
         self.viewControllers = [navigationHabitsVC,navigationInfoVC]
-        self.selectedViewController = navigationInfoVC
+        self.selectedViewController = navigationHabitsVC
     }
-
-
 }
