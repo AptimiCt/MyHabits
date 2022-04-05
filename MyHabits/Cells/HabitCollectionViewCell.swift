@@ -18,19 +18,18 @@ final class HabitCollectionViewCell: UICollectionViewCell {
 
             timeHabitLabel.text = habit.dateString
             countLabel.text = "Счетчик: " + String(habit.trackDates.count)
-
+            print("1")
             checkBoxButton.layer.borderColor = habitColor.cgColor
-            if habit.trackDates.count > 0 {
+            print(#function)
+            if habit.isAlreadyTakenToday {
+                print("checkmark habit")
                 checkBoxButton.backgroundColor = habitColor
                 checkBoxButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
                 checkBoxButton.tintColor = .white
             }
         }
     }
-    
-//    var indexPath: IndexPath?
-    
-//    weak var delegate: HabitCollectionViewCellDelegate?
+    weak var delegate: HabitCollectionViewCellDelegate?
     
     private let habitNameLabel: UILabel = {
         let habitNameLabel = UILabel()
@@ -110,12 +109,16 @@ final class HabitCollectionViewCell: UICollectionViewCell {
     @objc func checkBoxTaped(){
         guard let habit = habit else { return }
         let store = HabitsStore.shared
+        print("checkBoxTaped")
         if  !habit.isAlreadyTakenToday {
             store.track(habit)
             checkBoxButton.backgroundColor = habit.color
             checkBoxButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
             checkBoxButton.tintColor = .white
             countLabel.text = "Счетчик: " + String(habit.trackDates.count)
+            delegate?.checkBoxButtonTaped()
+            print("checkmark button")
+            print(#function)
         }
     }
 }

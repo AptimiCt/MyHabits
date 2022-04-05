@@ -45,12 +45,13 @@ final class HabitsViewController: UIViewController {
         view.addSubview(collectionView)
         collectionView.pin(to: view)
     }
-    
+
     //MARK: - @objc func
     @objc private func addButton(){
         let habitViewController = HabitViewController(.create)
         let navigationHabitViewController = UINavigationController(rootViewController: habitViewController)
         navigationHabitViewController.modalPresentationStyle = .fullScreen
+        habitViewController.delegate = self
         present(navigationHabitViewController, animated: true)
     }
 }
@@ -83,13 +84,29 @@ extension HabitsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ProgressCollectionViewCell.self), for: indexPath) as! ProgressCollectionViewCell
-            cell.configure(with: store)
-            return cell
+            cell.store = store
+        return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: HabitCollectionViewCell.self), for: indexPath) as! HabitCollectionViewCell
             cell.habit = store.habits[indexPath.item]
+            cell.delegate = self
             return cell
         }
     }
+    
 }
 
+extension HabitsViewController: HabitCollectionViewCellDelegate {
+    func checkBoxButtonTaped() {
+        print(#function)
+        let indexPath = IndexPath(item: 0, section: 0)
+        collectionView.reloadItems(at: [indexPath])
+    }
+}
+
+extension HabitsViewController:  HabitViewControllerDelegate {
+    func reload() {
+        print(#function)
+        collectionView.reloadData()
+    }
+}

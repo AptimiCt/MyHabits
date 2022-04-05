@@ -10,6 +10,8 @@ import UIKit
 final class HabitViewController: UIViewController {
     
     //MARK: - var
+    weak var delegate: HabitViewControllerDelegate?
+    
     private var actionType: ActionType
     private var notificationCenter = NotificationCenter.default
     
@@ -253,6 +255,8 @@ final class HabitViewController: UIViewController {
                              color: color)
         let store = HabitsStore.shared
         store.habits.append(newHabit)
+        delegate?.reload()
+        print(#function)
         dismiss(animated: true)
     }
 }

@@ -9,6 +9,13 @@ import UIKit
 
 final class ProgressCollectionViewCell: UICollectionViewCell {
     
+    var store: HabitsStore?{
+        didSet{
+            guard let store = store else { return }
+            progressBar.progress = store.todayProgress
+            percentLabel.text = "\(Int(store.todayProgress * 100))%"
+        }
+    }
     private let statusLabel: UILabel = {
         let statusLabel = UILabel()
         statusLabel.toAutoLayout()
@@ -18,7 +25,7 @@ final class ProgressCollectionViewCell: UICollectionViewCell {
         statusLabel.text = "Всё получится!"
         return statusLabel
     }()
-    private let percentLabel: UILabel = {
+    private var percentLabel: UILabel = {
         let percentLabel = UILabel()
         percentLabel.toAutoLayout()
         percentLabel.numberOfLines = 1
@@ -67,11 +74,5 @@ final class ProgressCollectionViewCell: UICollectionViewCell {
             progressBar.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -12),
             progressBar.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -15),
         ].forEach { $0.isActive = true }
-    }
-    //MARK: - func
-    func configure(with store: HabitsStore) {
-        let progress = store.todayProgress
-        progressBar.progress = progress
-        percentLabel.text = "\(Int(progress * 100))%"
     }
 }
