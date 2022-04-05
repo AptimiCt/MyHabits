@@ -7,9 +7,11 @@
 
 import UIKit
 
-class HabitViewController: UIViewController {
+final class HabitViewController: UIViewController {
     
     //MARK: - var
+    weak var delegate: HabitViewControllerDelegate?
+    
     private var actionType: ActionType
     private var notificationCenter = NotificationCenter.default
     
@@ -229,6 +231,7 @@ class HabitViewController: UIViewController {
         colorPicker.delegate = self
         colorPicker.selectedColor = colorPickerView.backgroundColor ?? .orange
         colorPicker.title = "Выбор цвета"
+        colorPicker.supportsAlpha = false
         present(colorPicker, animated: true)
     }
     
@@ -253,6 +256,7 @@ class HabitViewController: UIViewController {
                              color: color)
         let store = HabitsStore.shared
         store.habits.append(newHabit)
+        delegate?.reload()
         dismiss(animated: true)
     }
 }
