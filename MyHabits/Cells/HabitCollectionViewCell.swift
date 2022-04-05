@@ -18,11 +18,8 @@ final class HabitCollectionViewCell: UICollectionViewCell {
 
             timeHabitLabel.text = habit.dateString
             countLabel.text = "Счетчик: " + String(habit.trackDates.count)
-            print("1")
             checkBoxButton.layer.borderColor = habitColor.cgColor
-            print(#function)
             if habit.isAlreadyTakenToday {
-                print("checkmark habit")
                 checkBoxButton.backgroundColor = habitColor
                 checkBoxButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
                 checkBoxButton.tintColor = .white
@@ -73,9 +70,14 @@ final class HabitCollectionViewCell: UICollectionViewCell {
         setup()
         checkBoxButton.addTarget(self, action: #selector(checkBoxTaped), for: .touchUpInside)
     }
-
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - override func
+    override func prepareForReuse() {
+        checkBoxButton.backgroundColor = .white
+        checkBoxButton.setImage(nil, for: .normal)
     }
     
     //MARK: - private func
@@ -109,7 +111,6 @@ final class HabitCollectionViewCell: UICollectionViewCell {
     @objc func checkBoxTaped(){
         guard let habit = habit else { return }
         let store = HabitsStore.shared
-        print("checkBoxTaped")
         if  !habit.isAlreadyTakenToday {
             store.track(habit)
             checkBoxButton.backgroundColor = habit.color
@@ -117,8 +118,6 @@ final class HabitCollectionViewCell: UICollectionViewCell {
             checkBoxButton.tintColor = .white
             countLabel.text = "Счетчик: " + String(habit.trackDates.count)
             delegate?.checkBoxButtonTaped()
-            print("checkmark button")
-            print(#function)
         }
     }
 }

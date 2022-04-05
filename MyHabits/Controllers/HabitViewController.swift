@@ -231,6 +231,7 @@ final class HabitViewController: UIViewController {
         colorPicker.delegate = self
         colorPicker.selectedColor = colorPickerView.backgroundColor ?? .orange
         colorPicker.title = "Выбор цвета"
+        colorPicker.supportsAlpha = false
         present(colorPicker, animated: true)
     }
     
@@ -256,7 +257,6 @@ final class HabitViewController: UIViewController {
         let store = HabitsStore.shared
         store.habits.append(newHabit)
         delegate?.reload()
-        print(#function)
         dismiss(animated: true)
     }
 }

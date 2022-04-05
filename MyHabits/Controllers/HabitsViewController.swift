@@ -98,7 +98,6 @@ extension HabitsViewController: UICollectionViewDataSource {
 
 extension HabitsViewController: HabitCollectionViewCellDelegate {
     func checkBoxButtonTaped() {
-        print(#function)
         let indexPath = IndexPath(item: 0, section: 0)
         collectionView.reloadItems(at: [indexPath])
     }
@@ -106,7 +105,6 @@ extension HabitsViewController: HabitCollectionViewCellDelegate {
 
 extension HabitsViewController:  HabitViewControllerDelegate {
     func reload() {
-        print(#function)
         collectionView.reloadData()
     }
 }

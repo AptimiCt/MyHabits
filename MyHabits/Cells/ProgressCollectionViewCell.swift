@@ -9,6 +9,7 @@ import UIKit
 
 final class ProgressCollectionViewCell: UICollectionViewCell {
     
+    //MARK: - var
     var store: HabitsStore?{
         didSet{
             guard let store = store else { return }
