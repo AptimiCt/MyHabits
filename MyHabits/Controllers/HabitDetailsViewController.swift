@@ -18,12 +18,17 @@ class HabitDetailsViewController: UIViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: String(describing: UITableViewCell.self))
         return tableView
     }()
+    private lazy var editButton: UIBarButtonItem = UIBarButtonItem(title: "Править",
+                                                                   style: .done,
+                                                                   target: self,
+                                                                   action: #selector(edit))
     
     //MARK: - init
     init(with habit: Habit){
         self.habit = habit
         super.init(nibName: nil, bundle: nil)
         navigationItem.title = habit.name
+        navigationItem.rightBarButtonItem = editButton
         tableView.delegate = self
         tableView.dataSource = self
     }
@@ -38,7 +43,16 @@ class HabitDetailsViewController: UIViewController {
         view.addSubview(tableView)
         tableView.pin(to: view)
     }
+    //MARK: - @objc func
+    @objc func edit(){
+        let habitViewController = HabitViewController(.edit)
+        let navigationHabitViewController = UINavigationController(rootViewController: habitViewController)
+        navigationHabitViewController.modalPresentationStyle = .fullScreen
+        //habitViewController.delegate = self
+        present(navigationHabitViewController, animated: true)
+    }
 }
+
 //MARK: - extension
 extension HabitDetailsViewController: UITableViewDelegate {
     
@@ -50,7 +64,7 @@ extension HabitDetailsViewController: UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: UITableViewCell.self), for: indexPath)
-
+        
         let index = store.dates.count - indexPath.row - 1
         let date = store.trackDateString(forIndex: index)
         cell.textLabel?.text = date
