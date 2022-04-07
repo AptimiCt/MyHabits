@@ -10,6 +10,16 @@ import UIKit
 final class HabitViewController: UIViewController {
     
     //MARK: - var
+    var habit: Habit?{
+        didSet{
+            titleTextField.text = habit?.name
+            colorPickerView.backgroundColor = habit?.color
+            timePickerLabel.text = habit?.dateString
+            guard let date = habit?.date else { return }
+            timePicker.date = date
+        }
+    }
+    
     weak var delegate: HabitViewControllerDelegate?
     
     private var actionType: ActionType
@@ -155,7 +165,7 @@ final class HabitViewController: UIViewController {
     private func configureNavigationBar(for actionType: ActionType) {
         let leftButtonItem = UIBarButtonItem(title: "Отменить", style: .plain, target: self, action: #selector(cancel))
         let rightButtonItem = UIBarButtonItem(title: "Сохранить", style: .done, target: self, action: #selector(save))
-        self.navigationItem.title = actionType == .create ? "Создать" : "Редактировать"
+        self.navigationItem.title = actionType == .create ? "Создать" : "Править"
         self.navigationItem.leftBarButtonItem = leftButtonItem
         self.navigationItem.rightBarButtonItem = rightButtonItem
     }

@@ -46,6 +46,7 @@ class HabitDetailsViewController: UIViewController {
     //MARK: - @objc func
     @objc func edit(){
         let habitViewController = HabitViewController(.edit)
+        habitViewController.habit = habit
         let navigationHabitViewController = UINavigationController(rootViewController: habitViewController)
         navigationHabitViewController.modalPresentationStyle = .fullScreen
         //habitViewController.delegate = self
