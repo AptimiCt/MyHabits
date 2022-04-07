@@ -69,8 +69,8 @@ extension HabitsViewController: UICollectionViewDelegateFlowLayout {
         UIEdgeInsets(top: 0, left: 0, bottom: 18, right: 0)
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let title = store.habits[indexPath.row].name
-        let habitDetailsViewController = HabitDetailsViewController(with: title)
+        let habit = store.habits[indexPath.row]
+        let habitDetailsViewController = HabitDetailsViewController(with: habit)
         self.navigationController?.pushViewController(habitDetailsViewController, animated: true)
     }
     
