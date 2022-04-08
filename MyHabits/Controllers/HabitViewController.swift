@@ -20,6 +20,7 @@ final class HabitViewController: UIViewController {
         }
     }
     
+    var closureForTitle: ((String) -> ())?
     weak var delegate: HabitViewControllerDelegate?
     
     private var actionType: ActionType
@@ -164,7 +165,7 @@ final class HabitViewController: UIViewController {
     
     private func configureNavigationBar(for actionType: ActionType) {
         let leftButtonItem = UIBarButtonItem(title: "Отменить", style: .plain, target: self, action: #selector(cancel))
-        let rightButtonItem = UIBarButtonItem(title: "Сохранить", style: .done, target: self, action: #selector(save))
+        let rightButtonItem = UIBarButtonItem(title: "Сохранить", style: .done, target: self, action: #selector(saveHabit))
         self.navigationItem.title = actionType == .create ? "Создать" : "Править"
         self.navigationItem.leftBarButtonItem = leftButtonItem
         self.navigationItem.rightBarButtonItem = rightButtonItem
@@ -258,14 +259,27 @@ final class HabitViewController: UIViewController {
         dismiss(animated: true)
     }
     
-    @objc private func save() {
+    @objc private func saveHabit() {
         guard let text = titleTextField.text else { return }
         guard let color = colorPickerView.backgroundColor else { return }
-        let newHabit = Habit(name: text,
-                             date: timePicker.date,
-                             color: color)
         let store = HabitsStore.shared
-        store.habits.append(newHabit)
+        
+        if actionType == .create {
+            let newHabit = Habit(name: text,
+                                 date: timePicker.date,
+                                 color: color)
+            store.habits.append(newHabit)
+        } else {
+            guard let habit = habit else { return }
+            if store.habits.contains(habit) {
+                guard let index = store.habits.firstIndex(of: habit) else { return }
+                let editHabit = Habit(name: text,
+                                     date: timePicker.date,trackDates: habit.trackDates,
+                                     color: color)
+                store.habits[index] = editHabit
+                closureForTitle?(editHabit.name)
+            }
+        }
         delegate?.reload()
         dismiss(animated: true)
     }

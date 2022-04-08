@@ -9,6 +9,8 @@ import UIKit
 
 class HabitDetailsViewController: UIViewController {
     
+    //MARK: - var delegate
+    weak var delegate: HabitViewControllerDelegate?
     //MARK: - var
     private let store = HabitsStore.shared
     private let habit: Habit
@@ -49,7 +51,12 @@ class HabitDetailsViewController: UIViewController {
         habitViewController.habit = habit
         let navigationHabitViewController = UINavigationController(rootViewController: habitViewController)
         navigationHabitViewController.modalPresentationStyle = .fullScreen
-        //habitViewController.delegate = self
+        
+        habitViewController.closureForTitle = { [weak self] text in
+            self?.navigationItem.title = text
+        }
+        habitViewController.delegate = delegate
+        
         present(navigationHabitViewController, animated: true)
     }
 }
