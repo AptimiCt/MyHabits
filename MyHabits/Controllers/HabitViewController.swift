@@ -236,6 +236,25 @@ final class HabitViewController: UIViewController {
         }
     }
     
+    private func deleteAction(with habit: Habit?){
+        let store = HabitsStore.shared
+        guard let habitForRemove = habit else { return }
+        guard let index = store.habits.firstIndex(of: habitForRemove) else { return }
+        let message = "Вы хотите удалить привычку \"\(habitForRemove.name)\"?"
+        let deleteAction = UIAlertAction(title: NSLocalizedString("Удалить",
+                                         comment: "Default action"),
+                                         style: .destructive) { [weak self] _ in
+            store.habits.remove(at: index)
+            self?.delegate?.reload()
+            
+        }
+        let deleteAlert = UIAlertController(title: "Удалить привычку", message: message, preferredStyle: .alert)
+        
+        deleteAlert.addAction(UIAlertAction(title: NSLocalizedString("Отмена", comment: "Default action"), style: .cancel))
+        deleteAlert.addAction(deleteAction)
+        present(deleteAlert, animated: true, completion: nil)
+    }
+    
     //MARK: - @objc func
     @objc private func openColorPicker(){
         let colorPicker =  UIColorPickerViewController()
@@ -252,7 +271,7 @@ final class HabitViewController: UIViewController {
     }
     
     @objc private func deleteHabit(){
-        print(#function)
+        deleteAction(with: habit)
     }
     
     @objc private func cancel() {

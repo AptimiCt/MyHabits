@@ -31,7 +31,6 @@ class HabitDetailsViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         navigationItem.title = habit.name
         navigationItem.rightBarButtonItem = editButton
-        tableView.delegate = self
         tableView.dataSource = self
     }
     required init?(coder: NSCoder) {
@@ -62,9 +61,6 @@ class HabitDetailsViewController: UIViewController {
 }
 
 //MARK: - extension
-extension HabitDetailsViewController: UITableViewDelegate {
-    
-}
 
 extension HabitDetailsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
