@@ -20,6 +20,7 @@ final class HabitViewController: UIViewController {
         }
     }
     
+    var closureForClose: (() -> ())?
     var closureForTitle: ((String) -> ())?
     weak var delegate: HabitViewControllerDelegate?
     
@@ -246,7 +247,8 @@ final class HabitViewController: UIViewController {
                                          style: .destructive) { [weak self] _ in
             store.habits.remove(at: index)
             self?.delegate?.reload()
-            
+            self?.dismiss(animated: false)
+            self?.closureForClose?()
         }
         let deleteAlert = UIAlertController(title: "Удалить привычку", message: message, preferredStyle: .alert)
         

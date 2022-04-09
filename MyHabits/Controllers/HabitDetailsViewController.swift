@@ -54,6 +54,9 @@ class HabitDetailsViewController: UIViewController {
         habitViewController.closureForTitle = { [weak self] text in
             self?.navigationItem.title = text
         }
+        habitViewController.closureForClose = { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }
         habitViewController.delegate = delegate
         
         present(navigationHabitViewController, animated: true)
