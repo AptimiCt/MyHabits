@@ -34,7 +34,7 @@ final class HabitViewController: UIViewController {
     }()
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
-        scrollView.keyboardDismissMode = .onDrag
+        scrollView.keyboardDismissMode = .interactive
         return scrollView
     }()
     private lazy var titleLabel: UILabel = {
@@ -123,7 +123,7 @@ final class HabitViewController: UIViewController {
         
         configureNavigationBar(for: actionType)
         
-        setTextLabels()
+        setTextLabels(for: actionType)
         addTargets()
         
         view.addSubview(scrollView)
@@ -151,7 +151,10 @@ final class HabitViewController: UIViewController {
     }
     
     //MARK: - func
-    private func setTextLabels(){
+    private func setTextLabels(for actionType: ActionType){
+        if actionType == .create{
+            titleTextField.becomeFirstResponder()
+        }
         titleLabel.text = Constants.titleLabelForHabitVC
         colorLabel.text = Constants.colorLabelText
         timeLabel.text = Constants.timeLabelText
@@ -282,9 +285,15 @@ final class HabitViewController: UIViewController {
     
     @objc private func saveHabit() {
         guard let text = titleTextField.text else { return }
+        if text.isEmpty || text.replacingOccurrences(of: " ", with: "") == ""{
+            titleTextField.resignFirstResponder()
+            titleTextField.text = ""
+            titleTextField.placeholder = "Текстовое поле должно быть заполнено"
+            titleTextField.attributedPlaceholder = NSAttributedString(string: titleTextField.placeholder!, attributes: [NSAttributedString.Key.foregroundColor : UIColor.red])
+            return
+        }
         guard let color = colorPickerView.backgroundColor else { return }
         let store = HabitsStore.shared
-        
         if actionType == .create {
             let newHabit = Habit(name: text,
                                  date: timePicker.date,
