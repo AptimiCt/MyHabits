@@ -18,9 +18,9 @@ final class HabitsViewController: UIViewController {
     }()
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(HabitCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: HabitCollectionViewCell.self))
-        collectionView.register(ProgressCollectionViewCell.self, forCellWithReuseIdentifier: String(describing: ProgressCollectionViewCell.self))
-        collectionView.backgroundColor = UIColor(named: "LightGrayColor")
+        collectionView.register(HabitCollectionViewCell.self, forCellWithReuseIdentifier: Constants.habitCollectionViewCell)
+        collectionView.register(ProgressCollectionViewCell.self, forCellWithReuseIdentifier: Constants.progressCollectionViewCell)
+        collectionView.backgroundColor = UIColor(named: Constants.lightGrayColor)
         collectionView.contentInset = UIEdgeInsets(top: 22, left: 16, bottom: 0, right: 16)
         return collectionView
     }()
@@ -29,7 +29,7 @@ final class HabitsViewController: UIViewController {
     init(){
         super.init(nibName: nil, bundle: nil)
         view.backgroundColor = .white
-        self.title = "Сегодня"
+        self.title = Constants.titleForHabitsVC
         self.navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButton)), animated: true)
     }
     required init?(coder: NSCoder) {
@@ -89,17 +89,16 @@ extension HabitsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 0 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ProgressCollectionViewCell.self), for: indexPath) as! ProgressCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.progressCollectionViewCell, for: indexPath) as! ProgressCollectionViewCell
             cell.store = store
         return cell
         } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: HabitCollectionViewCell.self), for: indexPath) as! HabitCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.habitCollectionViewCell, for: indexPath) as! HabitCollectionViewCell
             cell.habit = store.habits[indexPath.item]
             cell.delegate = self
             return cell
         }
     }
-    
 }
 
 extension HabitsViewController: HabitCollectionViewCellDelegate {

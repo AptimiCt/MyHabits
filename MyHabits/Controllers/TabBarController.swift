@@ -17,7 +17,7 @@ final class TabBarController: UITabBarController {
         navigationHabitsVC.navigationBar.prefersLargeTitles = true
         habitsVC.tabBarItem = UITabBarItem(title: "Привычки", image: UIImage(named: "TabBarIcon"), tag: 0)
         let navigationInfoVC = UINavigationController(rootViewController: infoVC)
-        infoVC.tabBarItem = UITabBarItem(title: "Информация", image: UIImage(systemName: "info.circle.fill"), tag: 1)
+        infoVC.tabBarItem = UITabBarItem(title: Constants.titleForInfoVC, image: UIImage(systemName: "info.circle.fill"), tag: 1)
         
         self.viewControllers = [navigationHabitsVC,navigationInfoVC]
         self.selectedViewController = navigationHabitsVC
