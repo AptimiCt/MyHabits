@@ -69,10 +69,12 @@ extension HabitsViewController: UICollectionViewDelegateFlowLayout {
         UIEdgeInsets(top: 0, left: 0, bottom: 18, right: 0)
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let habit = store.habits[indexPath.row]
-        let habitDetailsViewController = HabitDetailsViewController(with: habit)
-        habitDetailsViewController.delegate = self
-        self.navigationController?.pushViewController(habitDetailsViewController, animated: true)
+        if indexPath.section != 0 {
+            let habit = store.habits[indexPath.row]
+            let habitDetailsViewController = HabitDetailsViewController(with: habit)
+            habitDetailsViewController.delegate = self
+            self.navigationController?.pushViewController(habitDetailsViewController, animated: true)
+        }
     }
     
 }
