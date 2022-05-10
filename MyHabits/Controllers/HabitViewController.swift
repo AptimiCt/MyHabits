@@ -10,6 +10,18 @@ import UIKit
 final class HabitViewController: UIViewController {
     
     //MARK: - var
+    var habit: Habit?{
+        didSet{
+            titleTextField.text = habit?.name
+            colorPickerView.backgroundColor = habit?.color
+            timePickerLabel.text = habit?.dateString
+            guard let date = habit?.date else { return }
+            timePicker.date = date
+        }
+    }
+    
+    var closureForClose: (() -> ())?
+    var closureForTitle: ((String) -> ())?
     weak var delegate: HabitViewControllerDelegate?
     
     private var actionType: ActionType
@@ -22,7 +34,7 @@ final class HabitViewController: UIViewController {
     }()
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
-        scrollView.keyboardDismissMode = .onDrag
+        scrollView.keyboardDismissMode = .interactive
         return scrollView
     }()
     private lazy var titleLabel: UILabel = {
@@ -37,7 +49,7 @@ final class HabitViewController: UIViewController {
         titleTextField.toAutoLayout()
         titleTextField.font = .preferredFont(forTextStyle: .body)
         titleTextField.font = .systemFont(ofSize: 17, weight: .regular)
-        titleTextField.placeholder = "Бегать по утрам, спать 8 часов и т.п."
+        titleTextField.placeholder = Constants.titleTextFieldPlaceholder
         return titleTextField
     }()
     private lazy var colorLabel: UILabel = {
@@ -81,7 +93,7 @@ final class HabitViewController: UIViewController {
     private let deleteButton: UIButton = {
         let deleteButton = UIButton()
         deleteButton.toAutoLayout()
-        deleteButton.setTitle("Удалить привычку", for: .normal)
+        deleteButton.setTitle(Constants.deleteButtonTitle, for: .normal)
         deleteButton.setTitleColor(.red, for: .normal)
         deleteButton.setTitleColor(UIColor(red: 0.5, green: 0, blue: 0, alpha: 1), for: .highlighted)
         return deleteButton
@@ -111,7 +123,7 @@ final class HabitViewController: UIViewController {
         
         configureNavigationBar(for: actionType)
         
-        setTextLabels()
+        setTextLabels(for: actionType)
         addTargets()
         
         view.addSubview(scrollView)
@@ -139,10 +151,13 @@ final class HabitViewController: UIViewController {
     }
     
     //MARK: - func
-    private func setTextLabels(){
-        titleLabel.text = "НАЗВАНИЕ"
-        colorLabel.text = "ЦВЕТ"
-        timeLabel.text = "ВРЕМЯ"
+    private func setTextLabels(for actionType: ActionType){
+        if actionType == .create{
+            titleTextField.becomeFirstResponder()
+        }
+        titleLabel.text = Constants.titleLabelForHabitVC
+        colorLabel.text = Constants.colorLabelText
+        timeLabel.text = Constants.timeLabelText
         let time = timePicker.date
         timePickerLabel.text = "Каждый день в \(dateFormatter.string(from: time))"
     }
@@ -153,9 +168,9 @@ final class HabitViewController: UIViewController {
     }
     
     private func configureNavigationBar(for actionType: ActionType) {
-        let leftButtonItem = UIBarButtonItem(title: "Отменить", style: .plain, target: self, action: #selector(cancel))
-        let rightButtonItem = UIBarButtonItem(title: "Сохранить", style: .done, target: self, action: #selector(save))
-        self.navigationItem.title = actionType == .create ? "Создать" : "Редактировать"
+        let leftButtonItem = UIBarButtonItem(title: Constants.leftButtonItemTitle, style: .plain, target: self, action: #selector(cancel))
+        let rightButtonItem = UIBarButtonItem(title: Constants.rightButtonItemTitle, style: .done, target: self, action: #selector(saveHabit))
+        self.navigationItem.title = actionType == .create ? Constants.navigationItemTitleCreate : Constants.navigationItemTitleEdit
         self.navigationItem.leftBarButtonItem = leftButtonItem
         self.navigationItem.rightBarButtonItem = rightButtonItem
     }
@@ -225,12 +240,32 @@ final class HabitViewController: UIViewController {
         }
     }
     
+    private func deleteAction(with habit: Habit?){
+        let store = HabitsStore.shared
+        guard let habitForRemove = habit else { return }
+        guard let index = store.habits.firstIndex(of: habitForRemove) else { return }
+        let message = "Вы хотите удалить привычку \"\(habitForRemove.name)\"?"
+        let deleteAction = UIAlertAction(title: NSLocalizedString("Удалить",
+                                         comment: "Default action"),
+                                         style: .destructive) { [weak self] _ in
+            store.habits.remove(at: index)
+            self?.delegate?.reload()
+            self?.dismiss(animated: false)
+            self?.closureForClose?()
+        }
+        let deleteAlert = UIAlertController(title: Constants.alertTitle, message: message, preferredStyle: .alert)
+        
+        deleteAlert.addAction(UIAlertAction(title: NSLocalizedString("Отмена", comment: "Default action"), style: .cancel))
+        deleteAlert.addAction(deleteAction)
+        present(deleteAlert, animated: true, completion: nil)
+    }
+    
     //MARK: - @objc func
     @objc private func openColorPicker(){
         let colorPicker =  UIColorPickerViewController()
         colorPicker.delegate = self
         colorPicker.selectedColor = colorPickerView.backgroundColor ?? .orange
-        colorPicker.title = "Выбор цвета"
+        colorPicker.title = Constants.colorPickerTitle
         colorPicker.supportsAlpha = false
         present(colorPicker, animated: true)
     }
@@ -241,21 +276,40 @@ final class HabitViewController: UIViewController {
     }
     
     @objc private func deleteHabit(){
-        print(#function)
+        deleteAction(with: habit)
     }
     
     @objc private func cancel() {
         dismiss(animated: true)
     }
     
-    @objc private func save() {
+    @objc private func saveHabit() {
         guard let text = titleTextField.text else { return }
+        if text.isEmpty || text.replacingOccurrences(of: " ", with: "") == ""{
+            titleTextField.resignFirstResponder()
+            titleTextField.text = ""
+            titleTextField.placeholder = "Текстовое поле должно быть заполнено"
+            titleTextField.attributedPlaceholder = NSAttributedString(string: titleTextField.placeholder!, attributes: [NSAttributedString.Key.foregroundColor : UIColor.red])
+            return
+        }
         guard let color = colorPickerView.backgroundColor else { return }
-        let newHabit = Habit(name: text,
-                             date: timePicker.date,
-                             color: color)
         let store = HabitsStore.shared
-        store.habits.append(newHabit)
+        if actionType == .create {
+            let newHabit = Habit(name: text,
+                                 date: timePicker.date,
+                                 color: color)
+            store.habits.append(newHabit)
+        } else {
+            guard let habit = habit else { return }
+            if store.habits.contains(habit) {
+                guard let index = store.habits.firstIndex(of: habit) else { return }
+                let editHabit = Habit(name: text,
+                                     date: timePicker.date,trackDates: habit.trackDates,
+                                     color: color)
+                store.habits[index] = editHabit
+                closureForTitle?(editHabit.name)
+            }
+        }
         delegate?.reload()
         dismiss(animated: true)
     }
